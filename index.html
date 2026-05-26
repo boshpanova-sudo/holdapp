@@ -282,8 +282,9 @@
     // TON Connect
     const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
       manifestUrl: 'https://boshpanova-sudo.github.io/holdapp/tonconnect-manifest.json',
-      buttonRootId: 'ton-connect-btn'
-    });
+      buttonRootId: 'ton-connect-btn',
+      restoreConnection: true
+});
 
     // Минимальный баланс для участия (в нано-токенах, меняй под свой токен)
     const MIN_BALANCE = 500000;
@@ -383,13 +384,11 @@
         }
 
       } catch(e) {
-        // Временные тестовые данные пока нет бэкенда
-        document.getElementById('token-balance').textContent = '5,420';
-        document.getElementById('hold-days').textContent = '14';
-        document.getElementById('level-badge').textContent = '📅 14 дней';
-        document.getElementById('checkin-btn').disabled = false;
-        document.getElementById('checkin-btn').textContent = '✅ Сделать Check In';
-        updateProgress(14);
+        document.getElementById('token-balance').textContent = '0';
+        document.getElementById('hold-days').textContent = '0';
+        document.getElementById('level-badge').textContent = '❌ Ошибка загрузки';
+        document.getElementById('checkin-btn').disabled = true;
+        document.getElementById('checkin-btn').textContent = 'Ошибка соединения';
       }
     }
 
