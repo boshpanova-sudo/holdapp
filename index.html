@@ -224,9 +224,20 @@
     <div id="ton-connect-btn"></div>
     <div id="wallet-info" style="display:none">
       <div class="wallet-connected">
-        <div class="wallet-dot"></div>
-        <div class="wallet-address" id="wallet-addr">—</div>
-      </div>
+  <div class="wallet-dot"></div>
+  <div class="wallet-address" id="wallet-addr">—</div>
+</div>
+<button onclick="disconnectWallet()" style="
+  margin-top: 10px;
+  width: 100%;
+  padding: 8px;
+  border-radius: 10px;
+  border: 1px solid #374151;
+  background: transparent;
+  color: #6b7280;
+  font-size: 13px;
+  cursor: pointer;
+">Отключить кошелёк</button>
     </div>
   </div>
 
@@ -415,6 +426,14 @@
         tg.showAlert('✅ Check In выполнен! (тест)');
       }
     });
+    async function disconnectWallet() {
+  await tonConnectUI.disconnect();
+  document.getElementById('wallet-info').style.display = 'none';
+  document.getElementById('stats-card').style.display = 'none';
+  document.querySelector('#ton-connect-btn').style.display = 'block';
+  document.getElementById('checkin-btn').disabled = true;
+  document.getElementById('checkin-btn').textContent = 'Подключи кошелёк для Check In';
+}
   </script>
 </body>
 </html>
