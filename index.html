@@ -47,35 +47,27 @@
         <button class="checkin-btn" onclick="checkIn()">📅 Check in</button>
     </div>
 
-    <!-- VIP LEVELS -->
+    <!-- VIP -->
     <div class="card">
         <div class="card-title">🔥 VIP Levels</div>
 
         <div class="vip-grid">
 
             <div class="vip" onclick="enterVIP(1)">
-                <div class="vip-title">Level 1</div>
-                <div class="vip-sub">100 TON</div>
+                <div>Level 1</div>
+                <div>100 TON</div>
             </div>
 
             <div class="vip" onclick="enterVIP(2)">
-                <div class="vip-title">Level 2</div>
-                <div class="vip-sub">500 TON</div>
+                <div>Level 2</div>
+                <div>500 TON</div>
             </div>
 
             <div class="vip" onclick="enterVIP(3)">
-                <div class="vip-title">Level 3</div>
-                <div class="vip-sub">1000 TON</div>
+                <div>Level 3</div>
+                <div>1000 TON</div>
             </div>
 
-        </div>
-    </div>
-
-    <!-- PRIZES -->
-    <div class="card">
-        <div class="card-title">🏆 Prizes</div>
-        <div id="prizes-list">
-            <div class="prize">No prizes yet</div>
         </div>
     </div>
 
@@ -85,23 +77,34 @@
 <div class="page" id="rating">
     <div class="card">
         <div class="card-title">🏆 Rating</div>
-        <div class="leader">🥇 Player 1</div>
-        <div class="leader">🥈 Player 2</div>
-        <div class="leader">🥉 Player 3</div>
+
+        <div class="leader">🥇 CryptoKing</div>
+        <div class="leader">🥈 TONMaster</div>
+        <div class="leader">🥉 HODLBoss</div>
+
     </div>
 </div>
 
-<div class="page" id="tab3"><div class="card">Tab 3</div></div>
-<div class="page" id="tab4"><div class="card">Tab 4</div></div>
+<!-- TAB 3 -->
+<div class="page" id="tab3">
+    <div class="card">Tab 3 (coming soon)</div>
+</div>
+
+<!-- TAB 4 -->
+<div class="page" id="tab4">
+    <div class="card">Tab 4 (coming soon)</div>
+</div>
 
 </div>
 
 <!-- NAV -->
 <div class="bottom-nav">
+
     <div class="nav-item active" onclick="openTab('profile', this)">👤</div>
     <div class="nav-item" onclick="openTab('rating', this)">🏆</div>
     <div class="nav-item" onclick="openTab('tab3', this)">⬜</div>
     <div class="nav-item" onclick="openTab('tab4', this)">⬜</div>
+
 </div>
 
 <script src="./js/app.js"></script>
