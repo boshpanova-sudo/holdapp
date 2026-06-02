@@ -1,100 +1,111 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!DOCTYPE html>
+    <html lang="ru">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Hold App Pro</title>
+    <title>Hold App Pro</title>
 
-<link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/style.css">
 
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-<script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
-</head>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+    </head>
 
-<body>
+    <body>
 
-<div class="topbar">
-    <div class="logo">HOLD</div>
-    <div class="wallet-mini" id="wallet-mini">Not connected</div>
-</div>
+    <div class="topbar">
+        <div class="logo">HOLD</div>
+        <div class="wallet-mini" id="wallet-mini">Not connected</div>
+    </div>
 
-<div class="app">
+    <div class="app">
 
-<!-- PROFILE -->
-<div class="page active" id="profile">
+    <!-- PROFILE -->
+    <div class="page active" id="profile">
 
-    <div class="profile-card">
+        <div class="card profile-card">
 
-        <img class="profile-bg" src="./assets/photo_5260759747449789517_y.jpg">
+            <div class="avatar">👤</div>
 
-        <div class="avatar">👤</div>
-
-        <div class="wallet-center">
             <div id="ton-connect-btn"></div>
+
+            <div class="big-address" id="profile-address">
+                <div class="stats">
+
+        <div class="stat">
+            <div class="stat-value" id="days-count">0</div>
+            <div class="stat-label">Days streak</div>
         </div>
 
-        <div class="wallet-address" id="profile-address">
-            Not connected
+        <div class="stat">
+            <div class="stat-value" id="token-count">0</div>
+            <div class="stat-label">TON balance</div>
         </div>
 
-        <div class="stats">
+    </div>
 
-            <div class="stat">
-                <div class="stat-value" id="days-count">0</div>
-                <div class="stat-label">Days streak</div>
+    <button class="checkin-btn" onclick="checkIn()">
+        📅 Отметиться
+    </button>
             </div>
 
-            <div class="stat">
-                <div class="stat-value" id="token-count">0</div>
-                <div class="stat-label">TON balance</div>
+            <div class="subtext">Your Wallet Profile</div>
+
+        </div>
+
+        <div class="card">
+            <div class="card-title">🏆 Won Prizes</div>
+
+            <div id="prizes-list">
+                <div class="prize">No prizes yet</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- LEADERBOARD -->
+    <div class="page" id="leaderboard">
+
+        <div class="card">
+            <div class="card-title">🏆 Leaderboard</div>
+
+            <div class="leader-item" onclick="openProfile('EQ111...AAA')">
+                🥇 CryptoKing — 10,000 holders
+            </div>
+
+            <div class="leader-item" onclick="openProfile('EQ222...BBB')">
+                🥈 TONMaster — 8,200 holders
+            </div>
+
+            <div class="leader-item" onclick="openProfile('EQ333...CCC')">
+                🥉 HODLBoss — 6,700 holders
             </div>
 
         </div>
 
-        <button class="checkin-btn" onclick="checkIn()">
-            📅 Отметиться
-        </button>
+    </div>
+
+    <div class="page" id="tab3">
+        <div class="card">Empty Tab 3</div>
+    </div>
+
+    <div class="page" id="tab4">
+        <div class="card">Empty Tab 4</div>
+    </div>
 
     </div>
 
-    <div class="card">
-        <div id="prizes-list">
-            <div class="prize">No prizes yet</div>
-        </div>
-    </div>
+    <div class="bottom-nav">
 
-</div>
-
-<!-- LEADERBOARD -->
-<div class="page" id="leaderboard">
-
-    <div class="card">
-        <div class="card-title">🏆 Leaderboard</div>
-
-        <div class="leader-item">🥇 CryptoKing — 10,000 holders</div>
-        <div class="leader-item">🥈 TONMaster — 8,200 holders</div>
-        <div class="leader-item">🥉 HODLBoss — 6,700 holders</div>
+        <div class="nav-item active" onclick="openTab('profile', this)">👤</div>
+        <div class="nav-item" onclick="openTab('leaderboard', this)">🏆</div>
+        <div class="nav-item" onclick="openTab('tab3', this)">⬜</div>
+        <div class="nav-item" onclick="openTab('tab4', this)">⬜</div>
 
     </div>
 
-</div>
+    <script src="./js/app.js"></script>
 
-<div class="page" id="tab3"><div class="card">Tab 3</div></div>
-<div class="page" id="tab4"><div class="card">Tab 4</div></div>
-
-</div>
-
-<div class="bottom-nav">
-
-    <div class="nav-item active" onclick="openTab('profile', this)">👤</div>
-    <div class="nav-item" onclick="openTab('leaderboard', this)">🏆</div>
-    <div class="nav-item" onclick="openTab('tab3', this)">⬜</div>
-    <div class="nav-item" onclick="openTab('tab4', this)">⬜</div>
-
-</div>
-
-<script src="./js/app.js"></script>
-
-</body>
-</html>
+    </body>
+    </html>
