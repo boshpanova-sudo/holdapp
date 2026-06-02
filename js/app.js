@@ -2,15 +2,16 @@ const tg = window.Telegram.WebApp;
 tg.expand();
 
 let walletAddress = null;
+let balance = 0;
 
-// TON CONNECT
-const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-    manifestUrl: "https://boshpanova-sudo.github.io/holdapp/tonconnect-manifest.json",
-    buttonRootId: "ton-connect-btn",
-    restoreConnection: true
-});
+/* LINKS */
+const vipLinks = {
+    1: "https://t.me/group_level_1",
+    2: "https://t.me/group_level_2",
+    3: "https://t.me/group_level_3"
+};
 
-// STORAGE
+/* STORAGE */
 function getData() {
     return JSON.parse(localStorage.getItem("holdapp") || "{}");
 }
@@ -19,15 +20,32 @@ function saveData(data) {
     localStorage.setItem("holdapp", JSON.stringify(data));
 }
 
-// CHECK IN
-function checkIn() {
-
-    if (!walletAddress) return alert("Connect wallet first");
+/* INIT USER FIX (ВАЖНО) */
+function initUser() {
+    if (!walletAddress) return;
 
     let data = getData();
 
     if (!data[walletAddress]) {
-        data[walletAddress] = { days: 0, last: null };
+        data[walletAddress] = { days: 0, last: null, prizes: [] };
+        saveData(data);
+    }
+
+    document.getElementById("days-count").innerText = data[walletAddress].days;
+}
+
+/* CHECK IN FIX */
+function checkIn() {
+
+    if (!walletAddress) {
+        alert("Connect wallet first");
+        return;
+    }
+
+    let data = getData();
+
+    if (!data[walletAddress]) {
+        data[walletAddress] = { days: 0, last: null, prizes: [] };
     }
 
     let user = data[walletAddress];
@@ -43,7 +61,7 @@ function checkIn() {
     yesterday.setDate(yesterday.getDate() - 1);
 
     if (user.last === yesterday.toDateString()) {
-        user.days += 1;
+        user.days = Number(user.days || 0) + 1;
     } else {
         user.days = 1;
     }
@@ -53,72 +71,63 @@ function checkIn() {
     data[walletAddress] = user;
     saveData(data);
 
-    updateUI();
+    // 🔥 UI FIX (главное исправление)
+    document.getElementById("days-count").innerText = user.days;
 }
 
-// LOAD BALANCE
+/* BALANCE */
 async function loadBalance(addr) {
     try {
         let res = await fetch(`https://toncenter.com/api/v2/getAddressBalance?address=${addr}`);
         let json = await res.json();
 
-        let ton = (json.result || 0) / 1e9;
+        balance = (json.result || 0) / 1e9;
 
-        document.getElementById("token-count").innerText = ton.toFixed(2);
+        document.getElementById("token-count").innerText = balance.toFixed(2);
 
     } catch {
-        document.getElementById("token-count").innerText = "0";
+        balance = 0;
     }
 }
 
-// UPDATE UI
-function updateUI() {
+/* VIP */
+function enterVIP(level) {
 
-    let data = getData();
-    let user = data[walletAddress];
+    if (!walletAddress) return alert("Connect wallet first");
 
-    document.getElementById("days-count").innerText =
-        user ? user.days : 0;
+    const req = {
+        1: 100,
+        2: 500,
+        3: 1000
+    };
+
+    if (balance < req[level]) {
+        return alert("Not enough TON balance");
+    }
+
+    window.open(vipLinks[level], "_blank");
 }
 
-// NAV
-function openTab(tab, el) {
+/* TON CONNECT */
+const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
+    manifestUrl: "https://boshpanova-sudo.github.io/holdapp/tonconnect-manifest.json",
+    buttonRootId: "ton-connect-btn",
+    restoreConnection: true
+});
 
-    document.querySelectorAll(".page")
-        .forEach(p => p.classList.remove("active"));
-
-    document.getElementById(tab).classList.add("active");
-
-    document.querySelectorAll(".nav-item")
-        .forEach(n => n.classList.remove("active"));
-
-    el.classList.add("active");
-}
-
-// TON CONNECT
 tonConnectUI.onStatusChange(async wallet => {
 
     if (wallet) {
-
         walletAddress = wallet.account.address;
 
         document.getElementById("wallet-mini").innerText =
-            walletAddress.slice(0, 6) + "..." + walletAddress.slice(-4);
+            walletAddress.slice(0,6) + "..." + walletAddress.slice(-4);
 
-        document.getElementById("profile-address").innerText =
-            walletAddress;
+        await loadBalance(walletAddress);
 
-        updateUI();
-        loadBalance(walletAddress);
+        initUser(); // 🔥 ВАЖНО: теперь streak всегда подгружается
 
     } else {
-
         walletAddress = null;
-
-        document.getElementById("wallet-mini").innerText = "Not connected";
-        document.getElementById("profile-address").innerText = "Not connected";
-
-        document.getElementById("days-count").innerText = 0;
-        document.getElementById("token-count").innerText = 0;
     }
 });
