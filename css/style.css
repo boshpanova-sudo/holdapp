@@ -52,14 +52,15 @@ body::before {
 }
 
 .avatar {
-    text-align: center;
     font-size: 40px;
+    text-align: center;
+    margin-bottom: 10px;
 }
 
 .connect-box {
     display: flex;
     justify-content: center;
-    margin: 10px 0;
+    margin-bottom: 10px;
 }
 
 .stats {
@@ -93,17 +94,18 @@ body::before {
 
 .vip {
     padding: 12px;
+    text-align: center;
     background: rgba(255,255,255,0.08);
     border-radius: 12px;
-    text-align: center;
     cursor: pointer;
 }
 
-.prize {
+.leader {
     padding: 10px;
     border-bottom: 1px solid #333;
 }
 
+/* NAV */
 .bottom-nav {
     position: fixed;
     bottom: 0;
