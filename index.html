@@ -1,439 +1,100 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Hold App</title>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    body {
-      background: #0a0a0f;
-      color: #ffffff;
-      font-family: 'Segoe UI', sans-serif;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 24px 16px;
-    }
+<title>Hold App Pro</title>
 
-    .logo {
-      font-size: 32px;
-      font-weight: 800;
-      letter-spacing: -1px;
-      margin-bottom: 4px;
-      background: linear-gradient(135deg, #a78bfa, #60a5fa);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
+<link rel="stylesheet" href="./css/style.css">
 
-    .tagline {
-      font-size: 13px;
-      color: #6b7280;
-      margin-bottom: 28px;
-    }
-
-    .card {
-      background: #13131a;
-      border: 1px solid #1f1f2e;
-      border-radius: 20px;
-      padding: 20px;
-      width: 100%;
-      max-width: 380px;
-      margin-bottom: 16px;
-    }
-
-    .card-title {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: #6b7280;
-      margin-bottom: 12px;
-    }
-
-    .wallet-btn {
-      width: 100%;
-      padding: 14px;
-      border-radius: 14px;
-      border: none;
-      background: linear-gradient(135deg, #7c3aed, #3b82f6);
-      color: white;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: opacity 0.2s;
-    }
-
-    .wallet-btn:hover { opacity: 0.85; }
-
-    .wallet-connected {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .wallet-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #22c55e;
-      flex-shrink: 0;
-    }
-
-    .wallet-address {
-      font-size: 13px;
-      color: #9ca3af;
-      word-break: break-all;
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .stat-box {
-      background: #0d0d14;
-      border-radius: 14px;
-      padding: 16px;
-      text-align: center;
-    }
-
-    .stat-value {
-      font-size: 26px;
-      font-weight: 800;
-      background: linear-gradient(135deg, #a78bfa, #60a5fa);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .stat-label {
-      font-size: 11px;
-      color: #6b7280;
-      margin-top: 4px;
-    }
-
-    .level-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: linear-gradient(135deg, #7c3aed22, #3b82f622);
-      border: 1px solid #7c3aed44;
-      border-radius: 30px;
-      padding: 8px 16px;
-      font-size: 14px;
-      font-weight: 600;
-      color: #a78bfa;
-      margin: 4px 0;
-    }
-
-    .progress-wrap {
-      margin-top: 12px;
-    }
-
-    .progress-label {
-      display: flex;
-      justify-content: space-between;
-      font-size: 12px;
-      color: #6b7280;
-      margin-bottom: 6px;
-    }
-
-    .progress-bar {
-      background: #1f1f2e;
-      border-radius: 99px;
-      height: 8px;
-      overflow: hidden;
-    }
-
-    .progress-fill {
-      height: 100%;
-      border-radius: 99px;
-      background: linear-gradient(90deg, #7c3aed, #3b82f6);
-      transition: width 0.6s ease;
-    }
-
-    .checkin-btn {
-      width: 100%;
-      max-width: 380px;
-      padding: 18px;
-      border-radius: 16px;
-      border: none;
-      background: linear-gradient(135deg, #7c3aed, #3b82f6);
-      color: white;
-      font-size: 17px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: opacity 0.2s, transform 0.1s;
-      letter-spacing: 0.5px;
-      margin-bottom: 16px;
-    }
-
-    .checkin-btn:hover { opacity: 0.9; transform: scale(1.01); }
-    .checkin-btn:disabled {
-      background: #1f1f2e;
-      color: #4b5563;
-      cursor: default;
-      transform: none;
-    }
-
-    .ad-banner {
-      width: 100%;
-      max-width: 380px;
-      background: #13131a;
-      border: 1px solid #1f1f2e;
-      border-radius: 16px;
-      padding: 16px;
-      text-align: center;
-      font-size: 13px;
-      color: #6b7280;
-    }
-
-    .ad-banner span {
-      display: block;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: #374151;
-      margin-bottom: 6px;
-    }
-
-    .not-eligible {
-      text-align: center;
-      padding: 20px;
-      color: #ef4444;
-      font-size: 14px;
-    }
-
-    #ton-connect-btn {
-      width: 100%;
-    }
-  </style>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
 </head>
+
 <body>
 
-  <div class="logo">HOLD APP</div>
-  <div class="tagline">Hold. Check in. Win.</div>
-
-  <!-- Кошелёк -->
-  <div class="card">
-    <div class="card-title">Кошелёк</div>
-    <div id="ton-connect-btn"></div>
-    <div id="wallet-info" style="display:none">
-      <div class="wallet-connected">
-  <div class="wallet-dot"></div>
-  <div class="wallet-address" id="wallet-addr">—</div>
+<div class="topbar">
+    <div class="logo">HOLD</div>
+    <div class="wallet-mini" id="wallet-mini">Not connected</div>
 </div>
-<button onclick="disconnectWallet()" style="
-  margin-top: 10px;
-  width: 100%;
-  padding: 8px;
-  border-radius: 10px;
-  border: 1px solid #374151;
-  background: transparent;
-  color: #6b7280;
-  font-size: 13px;
-  cursor: pointer;
-">Отключить кошелёк</button>
-    </div>
-  </div>
 
-  <!-- Статистика -->
-  <div class="card" id="stats-card" style="display:none">
-    <div class="card-title">Твоя статистика</div>
-    <div class="stats-grid">
-      <div class="stat-box">
-        <div class="stat-value" id="token-balance">—</div>
-        <div class="stat-label">Токенов</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-value" id="hold-days">—</div>
-        <div class="stat-label">Дней холда</div>
-      </div>
-    </div>
+<div class="app">
 
-    <div style="margin-top:16px; text-align:center">
-      <div class="card-title">Уровень</div>
-      <div class="level-badge" id="level-badge">⏳ Загрузка...</div>
-    </div>
+<!-- PROFILE -->
+<div class="page active" id="profile">
 
-    <div class="progress-wrap" id="progress-section">
-      <div class="progress-label">
-        <span id="progress-text">До следующего уровня</span>
-        <span id="progress-days"></span>
-      </div>
-      <div class="progress-bar">
-        <div class="progress-fill" id="progress-fill" style="width:0%"></div>
-      </div>
+    <div class="profile-card">
+
+        <img class="profile-bg" src="./assets/photo_5260759747449789517_y.jpg">
+
+        <div class="avatar">👤</div>
+
+        <div class="wallet-center">
+            <div id="ton-connect-btn"></div>
+        </div>
+
+        <div class="wallet-address" id="profile-address">
+            Not connected
+        </div>
+
+        <div class="stats">
+
+            <div class="stat">
+                <div class="stat-value" id="days-count">0</div>
+                <div class="stat-label">Days streak</div>
+            </div>
+
+            <div class="stat">
+                <div class="stat-value" id="token-count">0</div>
+                <div class="stat-label">TON balance</div>
+            </div>
+
+        </div>
+
+        <button class="checkin-btn" onclick="checkIn()">
+            📅 Отметиться
+        </button>
+
     </div>
 
-    <div id="not-eligible-msg" class="not-eligible" style="display:none">
-      ⚠️ Недостаточно токенов для участия
+    <div class="card">
+        <div id="prizes-list">
+            <div class="prize">No prizes yet</div>
+        </div>
     </div>
-  </div>
 
-  <!-- Check In -->
-  <button class="checkin-btn" id="checkin-btn" disabled>
-    Подключи кошелёк для Check In
-  </button>
+</div>
 
-  <!-- Реклама -->
-  <div class="ad-banner">
-    <span>Партнёр</span>
-    Здесь будет реклама партнёра 🚀
-  </div>
+<!-- LEADERBOARD -->
+<div class="page" id="leaderboard">
 
-  <script>
-    const tg = window.Telegram.WebApp;
-    tg.expand();
+    <div class="card">
+        <div class="card-title">🏆 Leaderboard</div>
 
-    // TON Connect
-    const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-      manifestUrl: 'https://boshpanova-sudo.github.io/holdapp/tonconnect-manifest.json',
-      buttonRootId: 'ton-connect-btn',
-      restoreConnection: true
-});
+        <div class="leader-item">🥇 CryptoKing — 10,000 holders</div>
+        <div class="leader-item">🥈 TONMaster — 8,200 holders</div>
+        <div class="leader-item">🥉 HODLBoss — 6,700 holders</div>
 
-    // Минимальный баланс для участия (в нано-токенах, меняй под свой токен)
-    const MIN_BALANCE = 300000;
-    // Адрес токена (замени на свой)
-    const TOKEN_ADDRESS = 'EQBxjNmwpTzSMDI6-_X2ad78fwnvZXxdHSzNyx_0wl5n24S5';
+    </div>
 
-    const levels = [
-      { days: 0,  label: '🌱 Новичок',   emoji: '🌱' },
-      { days: 7,  label: '⏱️ 7 дней',    emoji: '⏱️' },
-      { days: 14, label: '📅 14 дней',   emoji: '📅' },
-      { days: 21, label: '🗓️ 21 день',   emoji: '🗓️' },
-      { days: 30, label: '💎 Diamond',   emoji: '💎' },
-    ];
+</div>
 
-    function getLevel(days) {
-      let level = levels[0];
-      for (const l of levels) {
-        if (days >= l.days) level = l;
-      }
-      return level;
-    }
+<div class="page" id="tab3"><div class="card">Tab 3</div></div>
+<div class="page" id="tab4"><div class="card">Tab 4</div></div>
 
-    function getNextLevel(days) {
-      for (const l of levels) {
-        if (days < l.days) return l;
-      }
-      return null;
-    }
+</div>
 
-    function updateProgress(days) {
-      const next = getNextLevel(days);
-      const section = document.getElementById('progress-section');
-      if (!next) {
-        section.style.display = 'none';
-        return;
-      }
-      const prev = [...levels].reverse().find(l => l.days <= days);
-      const prevDays = prev ? prev.days : 0;
-      const pct = ((days - prevDays) / (next.days - prevDays)) * 100;
-      document.getElementById('progress-text').textContent = `До уровня ${next.label}`;
-      document.getElementById('progress-days').textContent = `${next.days - days} дн.`;
-      document.getElementById('progress-fill').style.width = pct + '%';
-    }
+<div class="bottom-nav">
 
-    let checkedIn = false;
+    <div class="nav-item active" onclick="openTab('profile', this)">👤</div>
+    <div class="nav-item" onclick="openTab('leaderboard', this)">🏆</div>
+    <div class="nav-item" onclick="openTab('tab3', this)">⬜</div>
+    <div class="nav-item" onclick="openTab('tab4', this)">⬜</div>
 
-    tonConnectUI.onStatusChange(async wallet => {
-      if (wallet) {
-        const addr = wallet.account.address;
-        const short = addr.slice(0, 6) + '...' + addr.slice(-4);
-        document.getElementById('wallet-addr').textContent = short;
-        document.getElementById('wallet-info').style.display = 'block';
-        document.getElementById('stats-card').style.display = 'block';
-        document.querySelector('#ton-connect-btn').style.display = 'none';
+</div>
 
-        await loadStats(addr);
-      } else {
-        document.getElementById('wallet-info').style.display = 'none';
-        document.getElementById('stats-card').style.display = 'none';
-        document.querySelector('#ton-connect-btn').style.display = 'block';
-        document.getElementById('checkin-btn').disabled = true;
-        document.getElementById('checkin-btn').textContent = 'Подключи кошелёк для Check In';
-      }
-    });
+<script src="./js/app.js"></script>
 
-    async function loadStats(address) {
-      try {
-        // Получаем данные с нашего бэкенда
-        const res = await fetch(`https://web-production-c4cd0.up.railway.app/api/user?address=${address}`);
-        const data = await res.json();
-
-        const balance = data.balance || 0;
-        const days = data.hold_days || 0;
-        checkedIn = data.checked_in_today || false;
-
-        document.getElementById('token-balance').textContent = balance.toLocaleString();
-        document.getElementById('hold-days').textContent = days;
-
-        if (balance >= MIN_BALANCE) {
-          const level = getLevel(days);
-          document.getElementById('level-badge').textContent = level.label;
-          document.getElementById('not-eligible-msg').style.display = 'none';
-          updateProgress(days);
-
-          if (!checkedIn) {
-            document.getElementById('checkin-btn').disabled = false;
-            document.getElementById('checkin-btn').textContent = '✅ Сделать Check In';
-          } else {
-            document.getElementById('checkin-btn').disabled = true;
-            document.getElementById('checkin-btn').textContent = '✓ Уже отмечен сегодня';
-          }
-        } else {
-          document.getElementById('level-badge').textContent = '❌ Недостаточно токенов';
-          document.getElementById('not-eligible-msg').style.display = 'block';
-          document.getElementById('checkin-btn').disabled = true;
-          document.getElementById('checkin-btn').textContent = 'Нужно больше токенов';
-        }
-
-      } catch(e) {
-        document.getElementById('token-balance').textContent = '0';
-        document.getElementById('hold-days').textContent = '0';
-        document.getElementById('level-badge').textContent = '❌ Ошибка загрузки';
-        document.getElementById('checkin-btn').disabled = true;
-        document.getElementById('checkin-btn').textContent = 'Ошибка соединения';
-      }
-    }
-
-    document.getElementById('checkin-btn').addEventListener('click', async () => {
-      const btn = document.getElementById('checkin-btn');
-      btn.textContent = '⏳ Отмечаемся...';
-      btn.disabled = true;
-
-      try {
-        // Отправляем check-in на бэкенд
-        const wallet = tonConnectUI.wallet;
-        await fetch('https://web-production-c4cd0.up.railway.app/api/checkin', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            address: wallet.account.address,
-            telegram_id: tg.initDataUnsafe?.user?.id
-          })
-        });
-        btn.textContent = '✓ Отмечен сегодня!';
-        tg.showAlert('✅ Check In выполнен! Стрик растёт 🔥');
-      } catch(e) {
-        btn.textContent = '✓ Отмечен сегодня!';
-        tg.showAlert('✅ Check In выполнен! (тест)');
-      }
-    });
-    async function disconnectWallet() {
-  await tonConnectUI.disconnect();
-  document.getElementById('wallet-info').style.display = 'none';
-  document.getElementById('stats-card').style.display = 'none';
-  document.querySelector('#ton-connect-btn').style.display = 'block';
-  document.getElementById('checkin-btn').disabled = true;
-  document.getElementById('checkin-btn').textContent = 'Подключи кошелёк для Check In';
-}
-  </script>
 </body>
 </html>
