@@ -124,3 +124,21 @@ body::before {
 .nav-item.active {
     opacity: 1;
 }
+
+.leader {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    font-size: 14px;
+}
+
+.rank {
+    font-weight: bold;
+    opacity: 0.8;
+}
+
+.gifts {
+    color: gold;
+    font-weight: bold;
+}
