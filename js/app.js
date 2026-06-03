@@ -4,7 +4,9 @@ tg.expand();
 let walletAddress = null;
 let balance = 0;
 
-/* NAV FIX (ВАЖНО) */
+const BACKEND = "https://weo-production-c4cd0.up.railway.app";
+
+/* ================= NAV ================= */
 window.openTab = function (tab, el) {
 
     document.querySelectorAll(".page").forEach(p => {
@@ -19,53 +21,49 @@ window.openTab = function (tab, el) {
     });
 
     if (el) el.classList.add("active");
+
+    if (tab === "rating") {
+        loadLeaderboard();
+    }
 };
 
-/* CHECK IN */
-function checkIn() {
+/* ================= CHECK IN ================= */
+async function checkIn() {
 
     if (!walletAddress) {
         alert("Connect wallet first");
         return;
     }
 
-    let data = JSON.parse(localStorage.getItem("holdapp") || "{}");
+    try {
+        const res = await fetch(`${BACKEND}/api/checkin`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                address: walletAddress,
+                telegram_id: tg.initDataUnsafe?.user?.id || 0
+            })
+        });
 
-    if (!data[walletAddress]) {
-        data[walletAddress] = { days: 0, last: null };
+        const data = await res.json();
+
+        if (data.status === "ok") {
+            alert("Check-in success 🚀");
+        } else if (data.status === "already") {
+            alert("Already checked today");
+        } else {
+            alert("Check-in error");
+        }
+
+    } catch (e) {
+        console.error(e);
+        alert("Error check-in");
     }
-
-    let user = data[walletAddress];
-
-    let today = new Date().toDateString();
-
-    // ❌ уже отмечался сегодня
-    if (user.last === today) {
-        alert("Already checked today");
-        return;
-    }
-
-    // вчерашняя проверка
-    let yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-
-    if (user.last === yesterday.toDateString()) {
-        user.days = (user.days || 0) + 1;
-    } else {
-        user.days = 1;
-    }
-
-    user.last = today;
-
-    data[walletAddress] = user;
-    localStorage.setItem("holdapp", JSON.stringify(data));
-
-    // 🔥 ВАЖНО: моментальный UI update
-    const el = document.getElementById("days-count");
-    if (el) el.innerText = user.days;
 }
 
-/* VIP SYSTEM */
+/* ================= VIP ================= */
 const vipLinks = {
     1: "https://t.me/group_level_1",
     2: "https://t.me/group_level_2",
@@ -89,7 +87,7 @@ function enterVIP(level) {
     window.open(vipLinks[level], "_blank");
 }
 
-/* BALANCE */
+/* ================= BALANCE ================= */
 async function loadBalance(addr) {
     try {
         let res = await fetch(`https://toncenter.com/api/v2/getAddressBalance?address=${addr}`);
@@ -104,7 +102,7 @@ async function loadBalance(addr) {
     }
 }
 
-/* TON CONNECT */
+/* ================= TON CONNECT ================= */
 const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
     manifestUrl: "https://boshpanova-sudo.github.io/holdapp/tonconnect-manifest.json",
     buttonRootId: "ton-connect-btn",
@@ -117,11 +115,10 @@ tonConnectUI.onStatusChange(async wallet => {
         walletAddress = wallet.account.address;
 
         document.getElementById("wallet-mini").innerText =
-            walletAddress.slice(0,6) + "..." + walletAddress.slice(-4);
+            walletAddress.slice(0, 6) + "..." + walletAddress.slice(-4);
 
         await loadBalance(walletAddress);
 
-        // 🔥 ДОБАВЬ ЭТО
         let data = JSON.parse(localStorage.getItem("holdapp") || "{}");
 
         if (!data[walletAddress]) {
@@ -136,3 +133,43 @@ tonConnectUI.onStatusChange(async wallet => {
         walletAddress = null;
     }
 });
+
+/* ================= LEADERBOARD ================= */
+async function loadLeaderboard() {
+    try {
+        const res = await fetch(`${BACKEND}/api/leaderboard`);
+        const data = await res.json();
+
+        const container = document.getElementById("leaderboard-list");
+
+        if (!data || data.length === 0) {
+            container.innerHTML = "No data yet";
+            return;
+        }
+
+        container.innerHTML = "";
+
+        data.forEach((user, index) => {
+
+            const div = document.createElement("div");
+            div.className = "leader";
+
+            let medal = "👤";
+            if (index === 0) medal = "🥇";
+            if (index === 1) medal = "🥈";
+            if (index === 2) medal = "🥉";
+
+            div.innerHTML = `
+                <div>${medal} ${user.username || "User"}</div>
+                <div class="gifts">🎁 ${user.gifts}</div>
+            `;
+
+            container.appendChild(div);
+        });
+
+    } catch (e) {
+        console.error(e);
+        document.getElementById("leaderboard-list").innerHTML =
+            "Error loading leaderboard";
+    }
+}
